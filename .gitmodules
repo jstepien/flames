@@ -1,0 +1,3 @@
+[submodule "vendor/FlameGraph"]
+	path = vendor/FlameGraph
+	url = https://github.com/brendangregg/FlameGraph
