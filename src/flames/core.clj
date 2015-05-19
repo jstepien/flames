@@ -4,6 +4,7 @@
             [clojure.string :as str]
             [org.httpkit.server :as httpd]
             [cheshire.core :as json]
+            [ring.middleware.params :as params]
             [riemann.jvm-profiler :as profiler]))
 
 (defn- put!
@@ -19,9 +20,10 @@
   (str/replace frame #" \((.*):[-0-9]+\)$" " [$1]"))
 
 (defn- events->traces
-  [events]
+  [predicate events]
   (for [{:keys [description metric]} events
-        :when description
+        :when (and description
+                   (predicate description))
         :let [frames (->> (str/split description #"\n")
                           (map remove-line-numbers)
                           reverse)]]
@@ -47,11 +49,26 @@
       out
       (throw (ex-info "Failed to generate image" result)))))
 
+(defn- params->trace-filter
+  [{:strs [remove filter] :or {remove [], filter [".*"]}}]
+  (let [param->patterns #(map re-pattern (if (vector? %) % [%]))
+        remove-patterns (param->patterns remove)
+        filter-patterns (param->patterns filter)]
+    (fn [description]
+      (let [match? #(re-find % description)]
+        (and (some match? filter-patterns)
+             (not-any? match? remove-patterns))))))
+
 (defn- svg
-  [state]
+  [state {:keys [params]}]
   (if-let [events (seq (:events state))]
-    {:body (traces->svg (events->traces events))
-     :headers {"content-type" "image/svg+xml"}}
+    (let [filter (params->trace-filter params)
+          traces (events->traces filter events)]
+      (if (seq traces)
+        {:body (traces->svg traces)
+         :headers {"content-type" "image/svg+xml"}}
+        {:status 500
+         :body "No data match given filters"}))
     {:status 503
      :body "No data available yet"}))
 
@@ -59,13 +76,14 @@
   [state {:keys [uri request-method] :as req}]
   (case [request-method uri]
     [:put "/events"] (put! state req)
-    [:get "/flames.svg"] (svg @state)
+    [:get "/flames.svg"] (svg @state req)
     {:body "Not found", :status 404}))
 
 (defn start!
   [opts]
   (let [state (atom nil)
-        handler #(handler state %)
+        handler (-> #(handler state %)
+                    params/wrap-params)
         defaults {:port 54332, :host "localhost"}
         opts (merge defaults opts)
         server (httpd/run-server handler opts)

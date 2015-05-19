@@ -12,6 +12,18 @@ Pluggable [Flame Graphs][fg] for Clojure.
 
 Wait 5 seconds and check out `http://localhost:54321/flames.svg`.
 
+Contents of the flame graph can be filtered using regular expressions passed
+in `filter` and `remove` query params. They can be specified multiple times:
+
+```
+GET /flames.svg?remove=socketAccept&remove=epollWait&filter=flames.core
+```
+
+Generated graph will contain only stack traces matching
+
+  - _at least one_ `filter` pattern, and
+  - _no_ `remove` pattern.
+
 ## Maturity status
 
 Surely you're joking.
