@@ -86,8 +86,8 @@
                     params/wrap-params)
         defaults {:port 54332, :host "localhost"}
         opts (merge defaults opts)
-        server (httpd/run-server handler opts)
-        profiler (profiler/start opts)]
+        server (httpd/run-server handler (select-keys opts [:host :port]))
+        profiler (profiler/start (select-keys opts [:host :port :dt :load]))]
     {:profiler profiler, :server server}))
 
 (defn stop!
