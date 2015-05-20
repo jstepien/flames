@@ -7,10 +7,29 @@ Pluggable [Flame Graphs][fg] for Clojure.
 ## Usage
 
 ```clojure
-(flames.core/start! {:port 54321, :host "localhost"})
+(def flames (flames.core/start! {:port 54321, :host "localhost"}))
 ```
 
 Wait 5 seconds and check out `http://localhost:54321/flames.svg`.
+When you're done stop the profiler by invoking:
+
+```clojure
+(flames.core/stop! flames)
+```
+
+### Options
+
+`flames.core/start!` accepts a map of following options:
+
+  - `:host` – host to which the HTTP server will bind,
+  - `:port` – port on which the HTTP server will listen,
+  - `:dt` – number of seconds of profiling between updates of the flame graph,
+  - `:load` – target fraction of one core's CPU time to use for profiling.
+
+Find more information about `:dt` and `:load` options as well as principles of
+operation of the profiler in [README of riemann-jvm-profiler][rjpreadme].
+
+### Graph generation
 
 Contents of the flame graph can be filtered using regular expressions passed
 in `filter` and `remove` query params. They can be specified multiple times:
@@ -54,3 +73,4 @@ DEALINGS IN THE SOFTWARE.
 [fg]: http://www.brendangregg.com/flamegraphs.html
 [png]: https://stepien.cc/~jan/flames-01.png
 [svg]: https://stepien.cc/~jan/flames-01.svg
+[rjpreadme]: https://github.com/riemann/riemann-jvm-profiler/blob/0.1.0/README.md
