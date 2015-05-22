@@ -32,16 +32,12 @@ operation of the profiler in [README of riemann-jvm-profiler][rjpreadme].
 ### Graph generation
 
 Contents of the flame graph can be filtered using regular expressions passed
-in `filter` and `remove` query params. They can be specified multiple times:
+in `filter` and `remove` query params.
 
 ```
-GET /flames.svg?remove=socketAccept&remove=epollWait&filter=flames.core
+GET /flames.svg?remove=%28socketRead|epollWait|socketAccept|readBytes%29
+GET /flames.svg?filter=flames.core
 ```
-
-Generated graph will contain only stack traces matching
-
-  - _at least one_ `filter` pattern, and
-  - _no_ `remove` pattern.
 
 ## Maturity status
 

@@ -50,14 +50,14 @@
       (throw (ex-info "Failed to generate image" result)))))
 
 (defn- params->trace-filter
-  [{:strs [remove filter] :or {remove [], filter [".*"]}}]
-  (let [param->patterns #(map re-pattern (if (vector? %) % [%]))
-        remove-patterns (param->patterns remove)
-        filter-patterns (param->patterns filter)]
+  [{:strs [remove filter]}]
+  (let [param->pattern #(cond (string? %) (re-pattern %)
+                              (seq %)     (re-pattern (first %)))
+        remove-pattern (param->pattern remove)
+        filter-pattern (param->pattern filter)]
     (fn [description]
-      (let [match? #(re-find % description)]
-        (and (some match? filter-patterns)
-             (not-any? match? remove-patterns))))))
+      (and (or (nil? filter) (re-find filter-pattern description))
+           (not (and remove (re-find remove-pattern description)))))))
 
 (defn- svg
   [state {:keys [params]}]
