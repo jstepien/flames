@@ -6,15 +6,22 @@ Pluggable [Flame Graphs][fg] for Clojure.
 
 ## Usage
 
+It's easier than you think. Get the newest release.
+
+[![Clojars Project](http://clojars.org/flames/latest-version.svg)](http://clojars.org/flames)
+
+Require the `flames.core` namespace and start the profiler.
+
 ```clojure
-(def flames (flames.core/start! {:port 54321, :host "localhost"}))
+(require '[flames.core :as flames])
+(def flames (flames/start! {:port 54321, :host "localhost"}))
 ```
 
 Wait 5 seconds and check out `http://localhost:54321/flames.svg`.
 When you're done stop the profiler by invoking:
 
 ```clojure
-(flames.core/stop! flames)
+(flames/stop! flames)
 ```
 
 ### Options
