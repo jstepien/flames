@@ -48,7 +48,7 @@ GET /flames.svg?filter=flames.core
 
 ## Maturity status
 
-Surely you're joking.
+Completely experimental.
 
 ## License
 
