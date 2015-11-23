@@ -13,7 +13,7 @@
         events (for [line lines
                      :when (seq line)]
                  (json/parse-string line keyword))]
-    (swap! state-atom assoc :events events)))
+    (swap! state-atom update-in [:events] concat events)))
 
 (defn- remove-line-numbers
   [frame]
