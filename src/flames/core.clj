@@ -9,11 +9,10 @@
 
 (defn- put!
   [state-atom {:keys [body]}]
-  (let [lines (doall (line-seq (io/reader body)))
-        events (for [line lines
+  (let [events (for [line (line-seq (io/reader body))
                      :when (seq line)]
                  (json/parse-string line keyword))]
-    (swap! state-atom update-in [:events] concat events)))
+    (swap! state-atom update-in [:events] (fnil into []) events)))
 
 (defn- remove-line-numbers
   [frame]
