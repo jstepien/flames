@@ -1,4 +1,4 @@
-# Flames
+# Flames [![Clojars Project](https://img.shields.io/clojars/v/flames.svg)](http://clojars.org/flames)
 
 Pluggable [Flame Graphs][fg] for Clojure.
 
@@ -6,11 +6,7 @@ Pluggable [Flame Graphs][fg] for Clojure.
 
 ## Usage
 
-It's easier than you think. Get the newest release.
-
-[![Clojars Project](http://clojars.org/flames/latest-version.svg)](http://clojars.org/flames)
-
-Require the `flames.core` namespace and start the profiler.
+It's easier than you think. Get the newest release. Require the `flames.core` namespace and start the profiler.
 
 ```clojure
 (require '[flames.core :as flames])
