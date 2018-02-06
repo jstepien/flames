@@ -1,4 +1,5 @@
 (ns flames.core
+  (:import java.io.Closeable)
   (:require [clojure.java.io :as io]
             [clojure.java.shell :as shell]
             [clojure.string :as str]
@@ -78,7 +79,7 @@
     [:get "/flames.svg"] (svg @state req)
     {:body "Not found", :status 404}))
 
-(defn start!
+(defn ^Closeable start!
   [opts]
   (let [state (atom nil)
         handler (-> #(handler state %)
@@ -87,9 +88,11 @@
         opts (merge defaults opts)
         server (httpd/run-server handler (select-keys opts [:host :port]))
         profiler (profiler/start (select-keys opts [:host :port :dt :load]))]
-    {:profiler profiler, :server server}))
+    (reify Closeable
+      (close [this]
+        (profiler/stop! profiler)
+        (server)))))
 
 (defn stop!
-  [{:keys [profiler server]}]
-  (profiler/stop! profiler)
-  (server))
+  [handle]
+  (.close ^Closeable handle))

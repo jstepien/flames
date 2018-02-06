@@ -20,6 +20,14 @@ When you're done stop the profiler by invoking:
 (flames/stop! flames)
 ```
 
+or
+
+```clojure
+(.close flames)
+```
+
+[`clojure.core/with-open`][with-open] works too.
+
 ### Options
 
 `flames.core/start!` accepts a map of following options:
@@ -73,3 +81,4 @@ DEALINGS IN THE SOFTWARE.
 [png]: https://stepien.cc/~jan/flames-01.png
 [svg]: https://stepien.cc/~jan/flames-01.svg
 [rjpreadme]: https://github.com/riemann/riemann-jvm-profiler/blob/0.1.0/README.md
+[with-open]: https://clojuredocs.org/clojure.core/with-open

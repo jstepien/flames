@@ -12,3 +12,9 @@
                    (slurp "http://0:54312/flames.svg")))
       (finally
         (stop! p)))))
+
+(deftest test-closing
+  (with-open [p (start! {:port 54312, :host "localhost"})]
+    (is (thrown-with-msg? java.io.FileNotFoundException
+                          #"http://0:54312/"
+                          (slurp "http://0:54312/")))))
