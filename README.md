@@ -2,7 +2,7 @@
 
 Pluggable [Flame Graphs][fg] for Clojure.
 
-[![Flames][png]][svg]
+[![Flames][preview]][svg]
 
 ## Usage
 
@@ -78,7 +78,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
 [fg]: http://www.brendangregg.com/flamegraphs.html
-[png]: https://stepien.cc/~jan/flames-01.png
-[svg]: https://stepien.cc/~jan/flames-01.svg
+[preview]: https://janstepien.com/flames/flames-preview.svg
+[svg]: https://janstepien.com/flames/flames.svg
 [rjpreadme]: https://github.com/riemann/riemann-jvm-profiler/blob/0.1.0/README.md
 [with-open]: https://clojuredocs.org/clojure.core/with-open
