@@ -1,4 +1,4 @@
-(defproject flames "0.4.0"
+(defproject flames "0.5.0"
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring/ring-core "1.9.6"
                   :exclusions [commons-fileupload
